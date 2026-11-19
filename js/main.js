@@ -37,7 +37,7 @@
   // Contact form: opens the visitor's email app with the message filled in.
   // To use a form service instead (e.g. Formspree), set the form's action and remove this handler.
   var form = document.getElementById('contactForm');
-  form.addEventListener('submit', function (e) {
+  if (form) form.addEventListener('submit', function (e) {
     e.preventDefault();
     var d = new FormData(form);
     var subject = 'Website enquiry: ' + d.get('topic');
@@ -45,5 +45,6 @@
     window.location.href = 'mailto:hello@dbsgroup.io?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
   });
 
-  document.getElementById('year').textContent = new Date().getFullYear();
+  var year = document.getElementById('year');
+  if (year) year.textContent = new Date().getFullYear();
 })();

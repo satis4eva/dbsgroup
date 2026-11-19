@@ -1,0 +1,54 @@
+# Pages CMS configuration (https://pagescms.org)
+# Log in at app.pagescms.org with GitHub and open satis4eva/dbsgroup.
+media:
+  input: images
+  output: /images
+content:
+  - name: posts
+    label: Blog posts
+    type: collection
+    path: content/posts
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, date, category]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: category
+        label: Category
+        type: select
+        options:
+          values: [Company news, Product update, Article, Case study, Event]
+      - name: excerpt
+        label: Short summary (shown on cards and in Google)
+        type: text
+        required: true
+      - name: body
+        label: Article
+        type: rich-text
+        options:
+          format: markdown
+  - name: settings
+    label: Site settings
+    type: file
+    path: content/settings.yml
+    fields:
+      - name: social
+        label: Social media links (leave blank to hide)
+        type: object
+        fields:
+          - { name: linkedin, label: LinkedIn URL, type: string }
+          - { name: facebook, label: Facebook URL, type: string }
+          - { name: instagram, label: Instagram URL, type: string }
+          - { name: x, label: X (Twitter) URL, type: string }
+          - { name: youtube, label: YouTube URL, type: string }
+          - { name: tiktok, label: TikTok URL, type: string }

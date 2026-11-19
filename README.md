@@ -12,6 +12,13 @@ Static website for DBS Group (HTML, CSS, JS: no build step).
 - Add a company or platform: copy an existing `<article class="card">` or `<div class="platform">` block.
 - Contact form: currently uses mailto. To receive submissions without the visitor's email app, set up a form service (e.g. Formspree) and point the form's `action` at it.
 
+## Blog, social links and editing portal
+- Posts: `content/posts/YYYY-MM-DD-slug.md` (front matter: title, date, category, excerpt; Markdown body).
+- Social links: `content/settings.yml` (blank = hidden).
+- Portal: log in at https://app.pagescms.org with GitHub, open `satis4eva/dbsgroup`, and edit posts or settings there.
+- After any change to `content/`, the GitHub Action `Build blog` runs `scripts/build_blog.py`, commits the built pages, and Hostinger deploys them.
+- Local build: `pip install markdown pyyaml && python3 scripts/build_blog.py`.
+
 ## Deploy (GitHub → Hostinger)
 1. Push this folder to a GitHub repo (e.g. `satis4eva/dbsgroup`).
 2. Hostinger hPanel → dbsgroup.io → Advanced → Git: add the repo, branch `main`, install path `public_html` (empty).

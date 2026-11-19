@@ -1,0 +1,9 @@
+# Site settings for dbsgroup.io
+# Paste the full URL for each social profile. Leave blank to hide that icon.
+social:
+  linkedin: ""
+  facebook: ""
+  instagram: ""
+  x: ""
+  youtube: ""
+  tiktok: ""
