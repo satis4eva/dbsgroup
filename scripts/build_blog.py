@@ -24,6 +24,7 @@ BLOG_DIR = os.path.join(ROOT, "blog")
 INDEX = os.path.join(ROOT, "index.html")
 SITE = "https://dbsgroup.io"
 START, END = "<!-- LATEST_POSTS_START -->", "<!-- LATEST_POSTS_END -->"
+ASSET_V = ""
 
 
 def load_posts():
@@ -63,8 +64,8 @@ def shared_parts():
     fix = lambda s: re.sub(r'href="#', 'href="/#', s)
     header = fix(header).replace('href="/#top" class="logo"', 'href="/" class="logo"')
     header = header.replace('<a href="/blog/">Blog</a>', '<a href="/blog/" class="active">Blog</a>')
-    head = re.search(r'(<link rel="icon".*?<link rel="stylesheet" href=")css/style.css(">)', src, re.S)
-    return header, fix(footer), head.group(1) + "/css/style.css" + head.group(2)
+    head = re.search(r'(<link rel="icon".*?<link rel="stylesheet" href=")(css/style\.css[^"]*)(">)', src, re.S)
+    return header, fix(footer), head.group(1) + "/" + head.group(2) + head.group(3)
 
 
 def page(title, desc, url, head_links, header, footer, body, og_type="website"):
@@ -89,7 +90,7 @@ def page(title, desc, url, head_links, header, footer, body, og_type="website"):
 {body}
 </main>
 {footer}
-<script src="/js/main.js"></script>
+<script src="/js/main.js?v={ASSET_V}"></script>
 </body>
 </html>
 """
@@ -123,16 +124,32 @@ def social_block():
     for key, (label, svg) in ICONS.items():
         url = (social.get(key) or "").strip()
         if url:
-            links.append(f'<a href="{html.escape(url)}" target="_blank" rel="noopener" aria-label="{label}"><svg viewBox="0 0 24 24">{svg}</svg></a>')
+            links.append(f'<a href="{html.escape(url)}" target="_blank" rel="noopener" aria-label="{label}"><svg viewBox="0 0 24 24" width="17" height="17" fill="#9AA6B6">{svg}</svg></a>')
     inner = f'<div class="social">{"".join(links)}</div>' if links else ""
     return f"{SOC_START}{inner}{SOC_END}"
 
 
+def asset_version():
+    import hashlib
+    h = hashlib.md5()
+    for f in ("css/style.css", "js/main.js"):
+        h.update(open(os.path.join(ROOT, f), "rb").read())
+    return h.hexdigest()[:8]
+
+
+def bust(s, v):
+    """Add ?v=<hash> to CSS/JS links so browsers load the latest version after each change."""
+    s = re.sub(r'(css/style\.css)(\?v=\w+)?', rf'\1?v={v}', s)
+    return re.sub(r'(js/main\.js)(\?v=\w+)?', rf'\1?v={v}', s)
+
+
 def build():
+    global ASSET_V
     posts = load_posts()
+    v = ASSET_V = asset_version()
 
     # Update the homepage first (social links + latest news), then copy its header/footer.
-    src = open(INDEX, encoding="utf-8").read()
+    src = bust(open(INDEX, encoding="utf-8").read(), v)
     src = re.sub(re.escape(SOC_START) + r".*?" + re.escape(SOC_END), social_block(), src, flags=re.S)
     latest = "\n      ".join(card(p) for p in posts[:3])
     src = re.sub(re.escape(START) + r".*?" + re.escape(END),

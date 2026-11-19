@@ -8,6 +8,8 @@ on:
     paths:
       - "content/**"
       - "scripts/build_blog.py"
+      - "css/**"
+      - "js/**"
   workflow_dispatch:
 
 permissions:
