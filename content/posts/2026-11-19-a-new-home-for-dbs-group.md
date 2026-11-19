@@ -10,7 +10,7 @@ We've rebuilt dbsgroup.io from the ground up. The new site brings everything the
 ## What's new
 
 - **All four companies in one view.** Digital Bot Solutions, DTEL, DPayments and DPayFlow each keep their own brand and website, and you can now see how they fit together.
-- **Our own platforms.** DBS Voice, InvoiceFlow and Lifetone now have a proper home on the group site.
+- **Our own platforms.** DBS Voice, InvoiceFlow and our travel and tourism platform now have a proper home on the group site.
 - **This blog.** We'll use it to share company news, product updates and practical articles on automation, telecoms and payments.
 
 ## Not sure where to start?
